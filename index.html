@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MunchMagic - Cloud Kitchen Instagram</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff6b35;
+            --secondary: #004e89;
+            --accent: #f7b801;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .instagram-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(255, 107, 53, 0.25);
+            overflow: hidden;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 2px solid var(--light);
+            background: linear-gradient(90deg, #fff 0%, #fafafa 100%);
+        }
+
+        .header-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.5px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 14px;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--secondary);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding: 20px 16px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .profile-pic {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 45px;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            border: 4px solid #fff;
+        }
+
+        .stats {
+            display: flex;
+            gap: 18px;
+            text-align: center;
+        }
+
+        .stat {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .username {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .bio {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            padding: 8px 12px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .contact-info i {
+            font-size: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .btn-order {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-order:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.35);
+        }
+
+        .btn-order:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-share {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #0066cc 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-share:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 78, 137, 0.35);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 10px 8px;
+            border-bottom: 2px solid var(--light);
+            background: #fafafa;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 0 0 auto;
+            padding: 8px 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+            border: 2px solid var(--light);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(255, 107, 53, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .menu-item-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu-item-price {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .menu-item-desc {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        /* Single Column Menu */
+        .menu-single {
+            padding: 16px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .menu-single-item {
+            background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+            border: 2px solid var(--light);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-single-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(255, 107, 53, 0.15);
+            transform: translateX(4px);
+        }
+
+        .menu-single-info {
+            flex: 1;
+        }
+
+        .menu-single-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .menu-single-detail {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .menu-single-price {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 700;
+            text-align: right;
+            min-width: 80px;
+        }
+
+        /* Highlights */
+        .highlights-section {
+            padding: 16px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .highlights-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .highlights {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .highlight {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 70px;
+        }
+
+        .highlight-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+
+        .highlight-circle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(255, 107, 53, 0.4);
+        }
+
+        .highlight-label {
+            font-size: 11px;
+            text-align: center;
+            color: #555;
+            font-weight: 600;
+        }
+
+        /* Grid Posts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: #ddd;
+            padding: 2px;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .grid-item:hover {
+            filter: brightness(0.9);
+            transform: scale(1.05);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #002d5c 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .cta-subtitle {
+            font-size: 13px;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(247, 184, 1, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .modal h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .phone-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .phone-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Billing Modal */
+        .billing-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.75);
+            animation: fadeIn 0.3s;
+            overflow-y: auto;
+        }
+
+        .billing-modal-content {
+            background: #fff;
+            margin: 20px auto;
+            border-radius: 18px;
+            width: 92%;
+            max-width: 480px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .billing-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .billing-header h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .billing-close {
+            font-size: 26px;
+            cursor: pointer;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+            background: none;
+            border: none;
+            color: white;
+            line-height: 1;
+        }
+
+        .billing-close:hover { opacity: 1; }
+
+        .billing-body {
+            padding: 16px;
+        }
+
+        .billing-section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 0 6px;
+            border-bottom: 2px solid var(--light);
+            margin-bottom: 10px;
+        }
+
+        .billing-item-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .billing-item-name {
+            flex: 1;
+            font-size: 12px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .billing-item-rate {
+            font-size: 11px;
+            color: #888;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        .billing-qty-input {
+            width: 52px;
+            padding: 4px 6px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: border-color 0.2s;
+        }
+
+        .billing-qty-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .billing-item-subtotal {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            min-width: 65px;
+            text-align: right;
+        }
+
+        .billing-delivery-section {
+            background: rgba(255,107,53,0.06);
+            border-radius: 12px;
+            padding: 14px;
+            margin: 14px 0;
+        }
+
+        .billing-delivery-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .billing-delivery-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .billing-distance-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: border-color 0.2s;
+        }
+
+        .billing-distance-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .billing-delivery-rate-note {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        .billing-summary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #002d5c 100%);
+            border-radius: 14px;
+            padding: 16px;
+            color: white;
+            margin-top: 14px;
+        }
+
+        .billing-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+
+        .billing-summary-row.total {
+            border-top: 2px solid rgba(255,255,255,0.25);
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .billing-summary-row .label { opacity: 0.85; }
+        .billing-summary-row .value { font-weight: 700; color: var(--accent); }
+        .billing-summary-row.total .value { color: #fff; font-size: 20px; }
+
+        .billing-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 0 0 4px;
+        }
+
+        .btn-generate-bill {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff8c42 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-generate-bill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,107,53,0.4);
+        }
+
+        .btn-reset-bill {
+            padding: 12px 18px;
+            background: #f0f0f0;
+            color: #555;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-reset-bill:hover { background: #e0e0e0; }
+
+        /* Bill Receipt */
+        .bill-receipt {
+            display: none;
+            background: #fffdf8;
+            border: 2px dashed var(--accent);
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 14px;
+        }
+
+        .bill-receipt.visible { display: block; }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .receipt-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .receipt-sub {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .receipt-divider {
+            border: none;
+            border-top: 2px dashed #ddd;
+            margin: 10px 0;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 4px 0;
+            color: var(--dark);
+        }
+
+        .receipt-row.bold {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--primary);
+            border-top: 2px solid var(--primary);
+            margin-top: 6px;
+            padding-top: 8px;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Billing button in action-buttons */
+        .btn-billing {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #7b2d8b 0%, #a044c0 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .btn-billing:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(123,45,139,0.35);
+        }
+    </style>
+</head>
+<body>
+    <div class="instagram-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">🍽️ MunchMagic</div>
+            <div class="header-icons">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-paper-plane"></i>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="profile-pic">🎯</div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-number">65</span>
+                        <span class="stat-label">Posts</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">8.5K</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">420</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="username">munchmagic.kitchen</div>
+            <div class="bio">
+                🍛 VEG & KASHMIRI NON-VEG Delights<br>
+                ⚡ Cloud Kitchen Magic<br>
+                🚀 Fresh. Fast. Delicious.
+            </div>
+
+            <div class="contact-info">
+                <i class="fas fa-phone"></i>
+                8595907790
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-order" onclick="openOrderModal()">📞 Order Now</button>
+                <button class="btn-billing" onclick="openBillingModal()">🧾 Bill It!</button>
+                <button class="btn-share">Share</button>
+            </div>
+        </div>
+
+        <!-- Highlights -->
+        <div class="highlights-section">
+            <div class="highlights-title">Explore</div>
+            <div class="highlights">
+                <div class="highlight">
+                    <div class="highlight-circle">🥘</div>
+                    <div class="highlight-label">Veg</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-circle">🍗</div>
+                    <div class="highlight-label">Kashmiri</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-circle">⭐</div>
+                    <div class="highlight-label">Reviews</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-circle">🎁</div>
+                    <div class="highlight-label">Offers</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs - All Menus -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('veg')">🥘 Veg</button>
+            <button class="tab-btn" onclick="switchTab('kashmiri')">🍗 Kashmiri</button>
+            <button class="tab-btn" onclick="switchTab('veg-catering')">👨‍🍳 Veg Catering</button>
+            <button class="tab-btn" onclick="switchTab('nonveg-catering')">🍖 NV Catering</button>
+        </div>
+
+        <!-- TAB 1: Vegetarian Menu (Golchand's) -->
+        <div id="veg" class="tab-content active">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-name">🌽 Paneer Corn</div>
+                    <div class="menu-item-desc">Half/Full</div>
+                    <div class="menu-item-price">₹110/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥬 Mix Chur Naan</div>
+                    <div class="menu-item-desc">Special</div>
+                    <div class="menu-item-price">₹100/160</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Aldo Pyaz</div>
+                    <div class="menu-item-desc">Special</div>
+                    <div class="menu-item-price">₹100/160</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🧅 Onion Paneer Chur</div>
+                    <div class="menu-item-desc">Special</div>
+                    <div class="menu-item-price">₹110/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍛 Dal Makhani</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹100/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Shahi Paneer</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹110/200</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🧀 Kadhai Paneer</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹120/220</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥘 Dal Tadka</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹80/160</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Palak Paneer</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹120/160</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🌶️ Soya Chaap</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹120/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍄 Mushroom Masala</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹120/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥘 Paneer Butter</div>
+                    <div class="menu-item-desc">Masala</div>
+                    <div class="menu-item-price">₹120/220</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Matar Mushroom</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹120/160</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍚 Raseela Rajma</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹100/130</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🌶️ Achari Soya</div>
+                    <div class="menu-item-desc">Chaap</div>
+                    <div class="menu-item-price">₹120/170</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥨 Normal Thali</div>
+                    <div class="menu-item-desc">Complete Meal</div>
+                    <div class="menu-item-price">₹150</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">👑 Deluxe Thali</div>
+                    <div class="menu-item-desc">Premium Meal</div>
+                    <div class="menu-item-price">₹230</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍚 Veg Biryani</div>
+                    <div class="menu-item-desc">Special Rice</div>
+                    <div class="menu-item-price">₹100</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥨 Tandoori Roti</div>
+                    <div class="menu-item-desc">Bread</div>
+                    <div class="menu-item-price">₹10</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥨 Naan</div>
+                    <div class="menu-item-desc">Butter/Garlic/Plain</div>
+                    <div class="menu-item-price">₹20-35</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: Kashmiri Non-Veg Menu -->
+        <div id="kashmiri" class="tab-content">
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-name">🍖 Mutton Kabab</div>
+                    <div class="menu-item-desc">Starter (10)</div>
+                    <div class="menu-item-price">₹1400/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍗 Chicken Kabab</div>
+                    <div class="menu-item-desc">Starter (10)</div>
+                    <div class="menu-item-price">₹1050/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍟 Chicken Tikka</div>
+                    <div class="menu-item-desc">Fry (32)</div>
+                    <div class="menu-item-price">₹1050/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥘 Rogan Josh</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Yakhni</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍛 Kaliya</div>
+                    <div class="menu-item-desc">Main (18)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍲 Macch</div>
+                    <div class="menu-item-desc">Main (20)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍖 Kabar-Gah</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍖 Goshtaba</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍖 Rista</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🥘 Chuk Charvan</div>
+                    <div class="menu-item-desc">Main Course</div>
+                    <div class="menu-item-price">₹1580/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍗 Chicken Rogan Josh</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1150/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍗 Chicken Curry</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1150/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍗 Chicken Fry</div>
+                    <div class="menu-item-desc">Main (10)</div>
+                    <div class="menu-item-price">₹1150/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍗 Chicken Biryani</div>
+                    <div class="menu-item-desc">Services 3</div>
+                    <div class="menu-item-price">₹1050/kg</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-name">🍖 Mutton Biryani</div>
+                    <div class="menu-item-desc">Services 3</div>
+                    <div class="menu-item-price">₹1250/kg</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Vegetarian Catering Menu -->
+        <div id="veg-catering" class="tab-content">
+            <div class="menu-single">
+                <div style="padding: 12px 0; border-bottom: 2px solid var(--light); margin-bottom: 12px;">
+                    <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">🥘 STARTERS</h3>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Paneer Pakoda (40 pcs)</div>
+                        <div class="menu-single-detail">Crispy fried paneer</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+
+                <div style="padding: 12px 0; border-bottom: 2px solid var(--light); margin-bottom: 12px; margin-top: 12px;">
+                    <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">🍛 MAIN COURSES</h3>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Dum Aaloo (12 pcs)</div>
+                        <div class="menu-single-detail">Spiced potatoes</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Yellow Paneer (34 pcs)</div>
+                        <div class="menu-single-detail">Paneer in gravy</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Red Paneer (14 pcs)</div>
+                        <div class="menu-single-detail">Tomato-based</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Rajmah Jammu</div>
+                        <div class="menu-single-detail">Bean curry</div>
+                    </div>
+                    <div class="menu-single-price">₹950/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mix Veg</div>
+                        <div class="menu-single-detail">Mixed vegetables</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mutter Palak</div>
+                        <div class="menu-single-detail">Peas & spinach</div>
+                    </div>
+                    <div class="menu-single-price">₹750/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Nadra Vakhni (20 pcs)</div>
+                        <div class="menu-single-detail">Cottage cheese</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mutter Mushroom</div>
+                        <div class="menu-single-detail">Peas & mushroom</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Khatta Baingan</div>
+                        <div class="menu-single-detail">Sour brinjal</div>
+                    </div>
+                    <div class="menu-single-price">₹500/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mooli Chutni</div>
+                        <div class="menu-single-detail">Radish relish</div>
+                    </div>
+                    <div class="menu-single-price">₹350/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Nadru Churma</div>
+                        <div class="menu-single-detail">Lotus root</div>
+                    </div>
+                    <div class="menu-single-price">₹650/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Ala Loki Yakhni</div>
+                        <div class="menu-single-detail">Bottle gourd</div>
+                    </div>
+                    <div class="menu-single-price">₹650/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Moonj Haak (Seasonal)</div>
+                        <div class="menu-single-detail">Leafy greens</div>
+                    </div>
+                    <div class="menu-single-price">₹450/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Palak Paneer</div>
+                        <div class="menu-single-detail">Spinach paneer</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mushroom Yakhni</div>
+                        <div class="menu-single-detail">Mushroom curry</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Basmati Rice</div>
+                        <div class="menu-single-detail">Premium rice</div>
+                    </div>
+                    <div class="menu-single-price">₹350/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Meetha Pulav</div>
+                        <div class="menu-single-detail">Sweet rice</div>
+                    </div>
+                    <div class="menu-single-price">₹850/kg</div>
+                </div>
+
+                <div style="padding: 12px 0; border-bottom: 2px solid var(--light); margin-bottom: 12px; margin-top: 12px;">
+                    <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">🍰 DESSERTS</h3>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Firni</div>
+                        <div class="menu-single-detail">Rice pudding</div>
+                    </div>
+                    <div class="menu-single-price">₹300/kg</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: Non-Veg Catering Menu -->
+        <div id="nonveg-catering" class="tab-content">
+            <div class="menu-single">
+                <div style="padding: 12px 0; border-bottom: 2px solid var(--light); margin-bottom: 12px;">
+                    <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">🍖 STARTERS</h3>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mutton Seek Kabeb (10 pcs)</div>
+                        <div class="menu-single-detail">Grilled mutton</div>
+                    </div>
+                    <div class="menu-single-price">₹1400/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Seek Kabeb (10 pcs)</div>
+                        <div class="menu-single-detail">Grilled chicken</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Tikka Fry (32 pcs)</div>
+                        <div class="menu-single-detail">Fried chicken</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+
+                <div style="padding: 12px 0; border-bottom: 2px solid var(--light); margin-bottom: 12px; margin-top: 12px;">
+                    <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 8px;">🥘 MAIN COURSES</h3>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Rogan Josh (10 pcs)</div>
+                        <div class="menu-single-detail">Kashmiri curry</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Yakhni (10 pcs)</div>
+                        <div class="menu-single-detail">Broth-based</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Kaliya (18 pcs)</div>
+                        <div class="menu-single-detail">Rich gravy</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Macch (20 pcs)</div>
+                        <div class="menu-single-detail">Fish curry</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Kabar-Gah (10 pcs)</div>
+                        <div class="menu-single-detail">Tender pieces</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Goshtaba (10 pcs)</div>
+                        <div class="menu-single-detail">Mutton balls</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Rista (10 pcs)</div>
+                        <div class="menu-single-detail">Meatballs</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chuk Charvan</div>
+                        <div class="menu-single-detail">Special recipe</div>
+                    </div>
+                    <div class="menu-single-price">₹1580/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Rogan Josh (10 pcs)</div>
+                        <div class="menu-single-detail">Chicken curry</div>
+                    </div>
+                    <div class="menu-single-price">₹1150/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Curry (10 pcs)</div>
+                        <div class="menu-single-detail">Spiced chicken</div>
+                    </div>
+                    <div class="menu-single-price">₹1150/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Fry (10 pcs)</div>
+                        <div class="menu-single-detail">Fried chicken</div>
+                    </div>
+                    <div class="menu-single-price">₹1150/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Chicken Biryani (6 pcs)</div>
+                        <div class="menu-single-detail">Services 3</div>
+                    </div>
+                    <div class="menu-single-price">₹1050/kg</div>
+                </div>
+                <div class="menu-single-item">
+                    <div class="menu-single-info">
+                        <div class="menu-single-name">Mutton Biryani (6 pcs)</div>
+                        <div class="menu-single-detail">Services 3</div>
+                    </div>
+                    <div class="menu-single-price">₹1250/kg</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid Posts -->
+        <div class="grid">
+            <div class="grid-item">🍛</div>
+            <div class="grid-item">🍖</div>
+            <div class="grid-item">🥘</div>
+            <div class="grid-item">🍗</div>
+            <div class="grid-item">🥗</div>
+            <div class="grid-item">🍲</div>
+            <div class="grid-item">🍚</div>
+            <div class="grid-item">🧅</div>
+            <div class="grid-item">⭐</div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-title">Ready to Taste Magic?</div>
+            <div class="cta-subtitle">Order now for fresh, delicious food delivered fast!</div>
+            <button class="cta-button" onclick="openOrderModal()">📞 Call to Order</button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>🎯 MunchMagic</h2>
+            <p>Call us now to place your order!</p>
+            <p style="font-size: 18px; font-weight: 700; color: var(--primary); margin: 15px 0;">📞 8595907790</p>
+            <a href="tel:8595907790" class="phone-link">Call Now</a>
+            <p style="margin-top: 15px; font-size: 12px; color: #999;">Available for delivery in your area</p>
+        </div>
+    </div>
+
+    <!-- Billing Modal -->
+    <div id="billingModal" class="billing-modal">
+        <div class="billing-modal-content">
+            <div class="billing-header">
+                <h2>🧾 Order Calculator</h2>
+                <button class="billing-close" onclick="closeBillingModal()">✕</button>
+            </div>
+            <div class="billing-body">
+
+                <!-- VEG ITEMS -->
+                <div class="billing-section-title">🥘 Veg Menu</div>
+                <div id="veg-billing-items">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- KASHMIRI NON-VEG -->
+                <div class="billing-section-title" style="margin-top:10px;">🍗 Kashmiri Non-Veg</div>
+                <div id="kash-billing-items"></div>
+
+                <!-- VEG CATERING -->
+                <div class="billing-section-title" style="margin-top:10px;">👨‍🍳 Veg Catering (per kg)</div>
+                <div id="vegcat-billing-items"></div>
+
+                <!-- NON-VEG CATERING -->
+                <div class="billing-section-title" style="margin-top:10px;">🍖 Non-Veg Catering (per kg)</div>
+                <div id="nvcat-billing-items"></div>
+
+                <!-- DELIVERY DISTANCE -->
+                <div class="billing-delivery-section">
+                    <div class="billing-delivery-label">🚴 Delivery Distance</div>
+                    <div class="billing-delivery-row">
+                        <input type="number" id="deliveryDistance" class="billing-distance-input" placeholder="Enter km" min="0" step="0.5" oninput="updateSummary()">
+                        <span style="font-size:13px; font-weight:700; color:var(--dark);">km</span>
+                    </div>
+                    <div class="billing-delivery-rate-note">📍 Delivery charge: ₹10 per km</div>
+                </div>
+
+                <!-- SUMMARY -->
+                <div class="billing-summary">
+                    <div class="billing-summary-row">
+                        <span class="label">🛒 Items Subtotal</span>
+                        <span class="value" id="summaryItems">₹0</span>
+                    </div>
+                    <div class="billing-summary-row">
+                        <span class="label">🚴 Delivery Charges</span>
+                        <span class="value" id="summaryDelivery">₹0</span>
+                    </div>
+                    <div class="billing-summary-row total">
+                        <span class="label">💳 Grand Total</span>
+                        <span class="value" id="summaryTotal">₹0</span>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="billing-actions">
+                    <button class="btn-generate-bill" onclick="generateReceipt()">🖨️ Generate Bill</button>
+                    <button class="btn-reset-bill" onclick="resetBill()">🔄 Reset</button>
+                </div>
+
+                <!-- RECEIPT -->
+                <div class="bill-receipt" id="billReceipt">
+                    <div class="receipt-header">
+                        <div class="receipt-title">🍽️ MunchMagic</div>
+                        <div class="receipt-sub">Cloud Kitchen · 📞 8595907790</div>
+                    </div>
+                    <hr class="receipt-divider">
+                    <div id="receiptItems"></div>
+                    <hr class="receipt-divider">
+                    <div id="receiptTotals"></div>
+                    <div class="receipt-footer">Thank you for ordering! 🎉 Fresh. Fast. Delicious.</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all content
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function openOrderModal() {
+            document.getElementById('orderModal').style.display = 'block';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('orderModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            const bModal = document.getElementById('billingModal');
+            if (event.target == bModal) {
+                bModal.style.display = 'none';
+            }
+        }
+
+        // ===================== BILLING SYSTEM =====================
+
+        const menuData = {
+            veg: [
+                { name: '🌽 Paneer Corn', price: 170, unit: 'Full' },
+                { name: '🥬 Mix Chur Naan', price: 160, unit: 'Full' },
+                { name: '🍲 Aldo Pyaz', price: 160, unit: 'Full' },
+                { name: '🧅 Onion Paneer Chur', price: 170, unit: 'Full' },
+                { name: '🍛 Dal Makhani', price: 170, unit: 'Full' },
+                { name: '🍲 Shahi Paneer', price: 200, unit: 'Full' },
+                { name: '🧀 Kadhai Paneer', price: 220, unit: 'Full' },
+                { name: '🥘 Dal Tadka', price: 160, unit: 'Full' },
+                { name: '🍲 Palak Paneer', price: 160, unit: 'Full' },
+                { name: '🌶️ Soya Chaap', price: 170, unit: 'Full' },
+                { name: '🍄 Mushroom Masala', price: 170, unit: 'Full' },
+                { name: '🥘 Paneer Butter Masala', price: 220, unit: 'Full' },
+                { name: '🍲 Matar Mushroom', price: 160, unit: 'Full' },
+                { name: '🍚 Raseela Rajma', price: 130, unit: 'Full' },
+                { name: '🌶️ Achari Soya Chaap', price: 170, unit: 'Full' },
+                { name: '🥨 Normal Thali', price: 150, unit: 'plate' },
+                { name: '👑 Deluxe Thali', price: 230, unit: 'plate' },
+                { name: '🍚 Veg Biryani', price: 100, unit: 'plate' },
+                { name: '🥨 Tandoori Roti', price: 10, unit: 'pc' },
+                { name: '🥨 Naan (Butter/Garlic)', price: 30, unit: 'pc' },
+            ],
+            kashmiri: [
+                { name: '🍖 Mutton Kabab', price: 1400, unit: 'kg' },
+                { name: '🍗 Chicken Kabab', price: 1050, unit: 'kg' },
+                { name: '🍟 Chicken Tikka Fry', price: 1050, unit: 'kg' },
+                { name: '🍖 Rogan Josh (Mutton)', price: 1580, unit: 'kg' },
+                { name: '🍖 Yakhni', price: 1580, unit: 'kg' },
+                { name: '🍖 Kaliya', price: 1580, unit: 'kg' },
+                { name: '🐟 Macch (Fish)', price: 1580, unit: 'kg' },
+                { name: '🍖 Kabar-Gah', price: 1580, unit: 'kg' },
+                { name: '🍖 Goshtaba', price: 1580, unit: 'kg' },
+                { name: '🍖 Rista', price: 1580, unit: 'kg' },
+                { name: '🍖 Chuk Charvan', price: 1580, unit: 'kg' },
+                { name: '🍗 Chicken Rogan Josh', price: 1150, unit: 'kg' },
+                { name: '🍗 Chicken Curry', price: 1150, unit: 'kg' },
+                { name: '🍗 Chicken Fry', price: 1150, unit: 'kg' },
+                { name: '🍗 Chicken Biryani', price: 1050, unit: 'kg' },
+                { name: '🍖 Mutton Biryani', price: 1250, unit: 'kg' },
+            ],
+            vegCatering: [
+                { name: 'Paneer Pakoda', price: 1050, unit: 'kg' },
+                { name: 'Dum Aaloo', price: 850, unit: 'kg' },
+                { name: 'Yellow Paneer', price: 1050, unit: 'kg' },
+                { name: 'Red Paneer', price: 1050, unit: 'kg' },
+                { name: 'Rajmah Jammu', price: 950, unit: 'kg' },
+                { name: 'Mix Veg', price: 850, unit: 'kg' },
+                { name: 'Mutter Palak', price: 750, unit: 'kg' },
+                { name: 'Nadra Vakhni', price: 1050, unit: 'kg' },
+                { name: 'Mutter Mushroom', price: 850, unit: 'kg' },
+                { name: 'Khatta Baingan', price: 500, unit: 'kg' },
+                { name: 'Mooli Chutni', price: 350, unit: 'kg' },
+                { name: 'Nadru Churma', price: 650, unit: 'kg' },
+                { name: 'Ala Loki Yakhni', price: 650, unit: 'kg' },
+                { name: 'Moonj Haak', price: 450, unit: 'kg' },
+                { name: 'Palak Paneer', price: 850, unit: 'kg' },
+                { name: 'Mushroom Yakhni', price: 850, unit: 'kg' },
+                { name: 'Basmati Rice', price: 350, unit: 'kg' },
+                { name: 'Meetha Pulav', price: 850, unit: 'kg' },
+                { name: 'Firni', price: 300, unit: 'kg' },
+            ],
+            nvCatering: [
+                { name: 'Mutton Seek Kabab', price: 1400, unit: 'kg' },
+                { name: 'Chicken Seek Kabab', price: 1050, unit: 'kg' },
+                { name: 'Chicken Tikka Fry', price: 1050, unit: 'kg' },
+                { name: 'Rogan Josh (Mutton)', price: 1580, unit: 'kg' },
+                { name: 'Yakhni', price: 1580, unit: 'kg' },
+                { name: 'Kaliya', price: 1580, unit: 'kg' },
+                { name: 'Macch (Fish)', price: 1580, unit: 'kg' },
+                { name: 'Kabar-Gah', price: 1580, unit: 'kg' },
+                { name: 'Goshtaba', price: 1580, unit: 'kg' },
+                { name: 'Rista', price: 1580, unit: 'kg' },
+                { name: 'Chuk Charvan', price: 1580, unit: 'kg' },
+                { name: 'Chicken Rogan Josh', price: 1150, unit: 'kg' },
+                { name: 'Chicken Curry', price: 1150, unit: 'kg' },
+                { name: 'Chicken Fry', price: 1150, unit: 'kg' },
+                { name: 'Chicken Biryani', price: 1050, unit: 'kg' },
+                { name: 'Mutton Biryani', price: 1250, unit: 'kg' },
+            ]
+        };
+
+        function renderBillingItems(containerId, items, prefix) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            items.forEach((item, i) => {
+                const id = `${prefix}_${i}`;
+                const row = document.createElement('div');
+                row.className = 'billing-item-row';
+                row.innerHTML = `
+                    <div class="billing-item-name">${item.name}</div>
+                    <div class="billing-item-rate">₹${item.price}/${item.unit}</div>
+                    <input type="number" class="billing-qty-input" id="${id}" min="0" step="${item.unit === 'kg' ? '0.5' : '1'}" placeholder="0" oninput="updateSummary()" value="">
+                    <div class="billing-item-subtotal" id="${id}_sub">₹0</div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function getTotal(items, prefix) {
+            let total = 0;
+            items.forEach((item, i) => {
+                const id = `${prefix}_${i}`;
+                const el = document.getElementById(id);
+                const qty = parseFloat(el.value) || 0;
+                const sub = qty * item.price;
+                total += sub;
+                document.getElementById(`${id}_sub`).textContent = sub > 0 ? `₹${sub.toLocaleString('en-IN')}` : '₹0';
+            });
+            return total;
+        }
+
+        function updateSummary() {
+            const v = getTotal(menuData.veg, 'veg');
+            const k = getTotal(menuData.kashmiri, 'kash');
+            const vc = getTotal(menuData.vegCatering, 'vegcat');
+            const nvc = getTotal(menuData.nvCatering, 'nvcat');
+            const itemsTotal = v + k + vc + nvc;
+
+            const dist = parseFloat(document.getElementById('deliveryDistance').value) || 0;
+            const deliveryCharge = dist * 10;
+            const grandTotal = itemsTotal + deliveryCharge;
+
+            document.getElementById('summaryItems').textContent = `₹${itemsTotal.toLocaleString('en-IN')}`;
+            document.getElementById('summaryDelivery').textContent = `₹${deliveryCharge.toLocaleString('en-IN')}`;
+            document.getElementById('summaryTotal').textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+        }
+
+        function generateReceipt() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-IN') + ' ' + now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+
+            let receiptItemsHtml = `<div class="receipt-row" style="font-weight:700; color:#888; font-size:11px; border-bottom:1px solid #eee; padding-bottom:4px; margin-bottom:4px;">
+                <span>Item</span><span>Qty × Rate = Amount</span></div>`;
+
+            let hasItems = false;
+
+            const allGroups = [
+                { label: '🥘 Veg', items: menuData.veg, prefix: 'veg' },
+                { label: '🍗 Kashmiri', items: menuData.kashmiri, prefix: 'kash' },
+                { label: '👨‍🍳 Veg Catering', items: menuData.vegCatering, prefix: 'vegcat' },
+                { label: '🍖 NV Catering', items: menuData.nvCatering, prefix: 'nvcat' },
+            ];
+
+            allGroups.forEach(group => {
+                let groupHasItems = false;
+                let groupHtml = `<div style="font-size:11px; color:var(--secondary); font-weight:700; margin:6px 0 2px;">${group.label}</div>`;
+                group.items.forEach((item, i) => {
+                    const id = `${group.prefix}_${i}`;
+                    const qty = parseFloat(document.getElementById(id).value) || 0;
+                    if (qty > 0) {
+                        const sub = qty * item.price;
+                        groupHtml += `<div class="receipt-row">
+                            <span>${item.name}</span>
+                            <span>${qty} × ₹${item.price} = ₹${sub.toLocaleString('en-IN')}</span>
+                        </div>`;
+                        groupHasItems = true;
+                        hasItems = true;
+                    }
+                });
+                if (groupHasItems) receiptItemsHtml += groupHtml;
+            });
+
+            if (!hasItems) {
+                alert('Please add at least one item to generate a bill!');
+                return;
+            }
+
+            const dist = parseFloat(document.getElementById('deliveryDistance').value) || 0;
+            const deliveryCharge = dist * 10;
+            const itemsTotal = (parseFloat(document.getElementById('summaryItems').textContent.replace(/[₹,]/g,'')) || 0);
+            const grandTotal = itemsTotal + deliveryCharge;
+
+            document.getElementById('receiptItems').innerHTML = receiptItemsHtml;
+            document.getElementById('receiptTotals').innerHTML = `
+                <div class="receipt-row"><span>Items Subtotal</span><span>₹${itemsTotal.toLocaleString('en-IN')}</span></div>
+                <div class="receipt-row"><span>🚴 Delivery (${dist} km × ₹10)</span><span>₹${deliveryCharge.toLocaleString('en-IN')}</span></div>
+                <div class="receipt-row bold"><span>💳 GRAND TOTAL</span><span>₹${grandTotal.toLocaleString('en-IN')}</span></div>
+                <div class="receipt-row" style="font-size:10px; color:#aaa; margin-top:4px;"><span>Date</span><span>${dateStr}</span></div>
+            `;
+
+            document.getElementById('billReceipt').classList.add('visible');
+            document.getElementById('billReceipt').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetBill() {
+            document.querySelectorAll('.billing-qty-input').forEach(el => el.value = '');
+            document.getElementById('deliveryDistance').value = '';
+            document.querySelectorAll('.billing-item-subtotal').forEach(el => el.textContent = '₹0');
+            document.getElementById('summaryItems').textContent = '₹0';
+            document.getElementById('summaryDelivery').textContent = '₹0';
+            document.getElementById('summaryTotal').textContent = '₹0';
+            document.getElementById('billReceipt').classList.remove('visible');
+        }
+
+        function openBillingModal() {
+            renderBillingItems('veg-billing-items', menuData.veg, 'veg');
+            renderBillingItems('kash-billing-items', menuData.kashmiri, 'kash');
+            renderBillingItems('vegcat-billing-items', menuData.vegCatering, 'vegcat');
+            renderBillingItems('nvcat-billing-items', menuData.nvCatering, 'nvcat');
+            document.getElementById('billingModal').style.display = 'block';
+            document.getElementById('billReceipt').classList.remove('visible');
+        }
+
+        function closeBillingModal() {
+            document.getElementById('billingModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

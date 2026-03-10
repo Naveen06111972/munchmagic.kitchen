@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MunchMagic - Cloud Kitchen</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --saffron: #FF6B35;
+    --deep: #1a0a00;
+    --gold: #FFB347;
+    --cream: #FFF8F0;
+    --green: #2ECC71;
+    --card-bg: #fff;
+    --shadow: 0 4px 24px rgba(255,107,53,0.10);
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--cream); color: var(--deep); }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #fff 60%, #fff3e8); border-bottom: 2px solid #ffe0c8; padding: 18px 16px 10px; }
+  .profile-row { display: flex; align-items: center; gap: 16px; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--saffron), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 3px solid var(--saffron); flex-shrink: 0; }
+  .stats { display: flex; gap: 18px; flex: 1; justify-content: center; }
+  .stat { text-align: center; }
+  .stat .num { font-weight: 700; font-size: 1.1rem; color: var(--deep); }
+  .stat .lbl { font-size: 0.72rem; color: #888; }
+  .bio { margin-top: 10px; }
+  .bio .name { font-weight: 700; font-size: 1.1rem; }
+  .bio .tag { color: var(--saffron); font-size: 0.8rem; margin-bottom: 2px; }
+  .bio .desc { font-size: 0.82rem; color: #555; line-height: 1.5; }
+  .bio .phone { font-weight: 700; color: var(--saffron); margin-top: 4px; font-size: 0.95rem; }
+
+  .btn-row { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-primary { flex: 1; background: var(--saffron); color: #fff; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: #e55a28; }
+  .btn-secondary { flex: 1; background: #fff; color: var(--deep); border: 1.5px solid #ddd; border-radius: 8px; padding: 9px 0; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+  .btn-delivery { flex: 1; background: linear-gradient(135deg, #FF6B35, #FFB347); color: #fff; border: none; border-radius: 8px; padding: 9px 0; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 3px 12px rgba(255,107,53,0.35); transition: transform 0.15s; }
+  .btn-delivery:hover { transform: translateY(-1px); }
+
+  /* NAV TABS */
+  .nav-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid #eee; background: #fff; }
+  .nav-tab { flex: 0 0 auto; padding: 12px 18px; font-size: 0.82rem; cursor: pointer; border-bottom: 2px solid transparent; color: #888; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .nav-tab.active { border-bottom-color: var(--saffron); color: var(--saffron); font-weight: 700; }
+
+  /* CATEGORY TABS */
+  .cat-tabs { display: flex; background: #fff; padding: 10px 12px; gap: 8px; border-bottom: 1px solid #f0e8e0; overflow-x: auto; }
+  .cat-tab { padding: 7px 16px; border-radius: 20px; font-size: 0.82rem; cursor: pointer; border: 1.5px solid #ddd; background: #fff; transition: all 0.2s; white-space: nowrap; }
+  .cat-tab.active { background: var(--saffron); color: #fff; border-color: var(--saffron); font-weight: 700; }
+
+  /* SECTION TITLE */
+  .section-title { padding: 14px 14px 6px; font-weight: 700; font-size: 1rem; color: var(--saffron); display: flex; align-items: center; gap: 6px; }
+
+  /* MENU GRID */
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 12px 12px; }
+  .menu-card { background: var(--card-bg); border-radius: 12px; padding: 10px 8px 12px; box-shadow: var(--shadow); text-align: center; position: relative; transition: transform 0.15s; }
+  .menu-card:hover { transform: translateY(-2px); }
+  .menu-card .emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+  .menu-card .item-name { font-weight: 700; font-size: 0.78rem; color: var(--deep); margin-bottom: 2px; line-height: 1.2; }
+  .menu-card .item-sub { font-size: 0.68rem; color: #aaa; margin-bottom: 4px; }
+  .menu-card .item-price { font-size: 0.82rem; font-weight: 700; color: var(--saffron); }
+  .menu-card .qty-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 6px; }
+  .qty-btn { width: 22px; height: 22px; border-radius: 50%; border: none; cursor: pointer; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .qty-btn.minus { background: #ffe0c8; color: var(--saffron); }
+  .qty-btn.plus { background: var(--saffron); color: #fff; }
+  .qty-num { font-size: 0.85rem; font-weight: 700; min-width: 16px; text-align: center; }
+
+  /* DELIVERY MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: flex-end; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 22px 22px 0 0; width: 100%; max-width: 480px; padding: 24px 20px 36px; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .modal-sub { font-size: 0.8rem; color: #888; margin-bottom: 18px; }
+  .modal-close { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #888; }
+
+  /* DISTANCE INPUT */
+  .dist-group { display: flex; align-items: center; gap: 10px; background: #fff8f4; border-radius: 12px; padding: 12px 14px; border: 1.5px solid #ffd0b0; margin-bottom: 16px; }
+  .dist-icon { font-size: 1.4rem; }
+  .dist-input { flex: 1; border: none; background: transparent; font-size: 1.1rem; font-weight: 700; color: var(--deep); outline: none; }
+  .dist-unit { font-size: 0.85rem; color: #888; font-weight: 600; }
+
+  /* BILL TABLE */
+  .bill-table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+  .bill-table th { text-align: left; font-size: 0.75rem; color: #aaa; padding: 4px 6px; border-bottom: 1px solid #f0e8e0; }
+  .bill-table td { padding: 6px 6px; font-size: 0.82rem; border-bottom: 1px solid #faf0e8; }
+  .bill-table .item-col { font-weight: 600; }
+  .bill-table .price-col { text-align: right; font-weight: 700; color: var(--saffron); }
+  .bill-table .qty-col { text-align: center; }
+  .bill-table tfoot td { font-weight: 700; border-top: 2px solid var(--saffron); padding-top: 8px; }
+  .delivery-row td { color: #e67e22; font-weight: 600; }
+  .grand-total td { font-size: 1rem; color: var(--saffron); }
+
+  .empty-cart { text-align: center; padding: 24px; color: #bbb; font-size: 0.9rem; }
+  .calc-btn { width: 100%; background: linear-gradient(135deg, var(--saffron), var(--gold)); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 1rem; font-weight: 800; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 16px rgba(255,107,53,0.3); transition: transform 0.15s; }
+  .calc-btn:hover { transform: translateY(-1px); }
+
+  /* CALL MODAL */
+  .call-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+  .call-modal.open { display: flex; }
+  .call-box { background: #fff; border-radius: 18px; padding: 28px 24px; text-align: center; width: 280px; box-shadow: 0 12px 48px rgba(0,0,0,0.18); }
+  .call-box .x { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #aaa; margin-top: -8px; }
+  .call-box h2 { font-size: 1.1rem; margin: 10px 0 4px; }
+  .call-box .num { color: var(--saffron); font-size: 1.2rem; font-weight: 800; margin: 8px 0 16px; }
+  .call-btn { display: inline-block; background: var(--saffron); color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 1rem; }
+  .call-note { font-size: 0.75rem; color: #aaa; margin-top: 10px; }
+
+  /* FOOTER EMOJI BAR */
+  .emoji-bar { display: flex; justify-content: space-around; background: #fff; padding: 12px 8px 18px; border-top: 1px solid #eee; font-size: 1.4rem; position: sticky; bottom: 0; }
+
+  /* CTA SECTION */
+  .cta-section { background: linear-gradient(135deg, var(--saffron), var(--gold)); color: #fff; text-align: center; padding: 28px 16px; margin: 10px 0; }
+  .cta-section h2 { font-size: 1.2rem; margin-bottom: 6px; }
+  .cta-section p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 16px; }
+  .cta-call-btn { background: #fff; color: var(--saffron); font-weight: 800; border: none; border-radius: 30px; padding: 12px 30px; font-size: 0.95rem; cursor: pointer; }
+
+  /* TABS CONTENT */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* HIGHLIGHT badge */
+  .new-badge { position: absolute; top: 6px; right: 6px; background: var(--saffron); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 20px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="profile-row">
+    <div class="avatar">🍽️</div>
+    <div class="stats">
+      <div class="stat"><div class="num">65</div><div class="lbl">Posts</div></div>
+      <div class="stat"><div class="num">8.5K</div><div class="lbl">Followers</div></div>
+      <div class="stat"><div class="num">420</div><div class="lbl">Following</div></div>
+    </div>
+  </div>
+  <div class="bio">
+    <div class="name">🍽️ MunchMagic</div>
+    <div class="tag">munchmagic.kitchen</div>
+    <div class="desc">🍛 VEG & KASHMIRI NON-VEG Delights<br>⚡ Cloud Kitchen Magic &nbsp;🚀 Fresh. Fast. Delicious.</div>
+    <div class="phone">📞 8595907790</div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-primary" onclick="openCall()">📞 Order Now</button>
+    <button class="btn-secondary" onclick="shareApp()">Share</button>
+    <button class="btn-delivery" onclick="openDelivery()">🛵 Delivery Charges</button>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showMainTab('veg',this)">🥘<span>Veg</span></div>
+  <div class="nav-tab" onclick="showMainTab('kashmiri',this)">🍗<span>Kashmiri</span></div>
+  <div class="nav-tab" onclick="showMainTab('reviews',this)">⭐<span>Reviews</span></div>
+  <div class="nav-tab" onclick="showMainTab('offers',this)">🎁<span>Offers</span></div>
+</div>
+
+<!-- ===== VEG TAB ===== -->
+<div id="tab-veg" class="tab-content active">
+  <div class="cat-tabs">
+    <div class="cat-tab active" onclick="showCat('veg-main',this)">🥘 Veg</div>
+    <div class="cat-tab" onclick="showCat('veg-catering',this)">👨‍🍳 Veg Catering</div>
+  </div>
+
+  <div id="veg-main">
+    <div class="section-title">🥘 Veg Menu</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Paneer Corn" data-price="110"><span class="emoji">🌽</span><div class="item-name">Paneer Corn</div><div class="item-sub">Half/Full</div><div class="item-price">₹110/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Mix Chur Naan" data-price="100"><span class="emoji">🥬</span><div class="item-name">Mix Chur Naan</div><div class="item-sub">Special</div><div class="item-price">₹100/160</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Aldo Pyaz" data-price="100"><span class="emoji">🍲</span><div class="item-name">Aldo Pyaz</div><div class="item-sub">Special</div><div class="item-price">₹100/160</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Onion Paneer Chur" data-price="110"><span class="emoji">🧅</span><div class="item-name">Onion Paneer Chur</div><div class="item-sub">Special</div><div class="item-price">₹110/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Dal Makhani" data-price="100"><span class="emoji">🍛</span><div class="item-name">Dal Makhani</div><div class="item-sub">Main Course</div><div class="item-price">₹100/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Shahi Paneer" data-price="110"><span class="emoji">🍲</span><div class="item-name">Shahi Paneer</div><div class="item-sub">Main Course</div><div class="item-price">₹110/200</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Kadhai Paneer" data-price="120"><span class="emoji">🧀</span><div class="item-name">Kadhai Paneer</div><div class="item-sub">Main Course</div><div class="item-price">₹120/220</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Dal Tadka" data-price="80"><span class="emoji">🥘</span><div class="item-name">Dal Tadka</div><div class="item-sub">Main Course</div><div class="item-price">₹80/160</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Palak Paneer" data-price="120"><span class="emoji">🍲</span><div class="item-name">Palak Paneer</div><div class="item-sub">Main Course</div><div class="item-price">₹120/160</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Soya Chaap" data-price="120"><span class="emoji">🌶️</span><div class="item-name">Soya Chaap</div><div class="item-sub">Main Course</div><div class="item-price">₹120/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Mushroom Masala" data-price="120"><span class="emoji">🍄</span><div class="item-name">Mushroom Masala</div><div class="item-sub">Main Course</div><div class="item-price">₹120/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Paneer Butter Masala" data-price="120"><span class="emoji">🥘</span><div class="item-name">Paneer Butter Masala</div><div class="item-sub">Main Course</div><div class="item-price">₹120/220</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Matar Mushroom" data-price="120"><span class="emoji">🍲</span><div class="item-name">Matar Mushroom</div><div class="item-sub">Main Course</div><div class="item-price">₹120/160</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Raseela Rajma" data-price="100"><span class="emoji">🍚</span><div class="item-name">Raseela Rajma</div><div class="item-sub">Main Course</div><div class="item-price">₹100/130</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Achari Soya Chaap" data-price="120"><span class="emoji">🌶️</span><div class="item-name">Achari Soya Chaap</div><div class="item-sub">Main Course</div><div class="item-price">₹120/170</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Normal Thali" data-price="150"><span class="emoji">🥨</span><div class="item-name">Normal Thali</div><div class="item-sub">Complete Meal</div><div class="item-price">₹150</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Deluxe Thali" data-price="230"><span class="emoji">👑</span><div class="new-badge">⭐</div><div class="item-name">Deluxe Thali</div><div class="item-sub">Premium Meal</div><div class="item-price">₹230</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Veg Biryani" data-price="100"><span class="emoji">🍚</span><div class="item-name">Veg Biryani</div><div class="item-sub">Special Rice</div><div class="item-price">₹100</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Tandoori Roti" data-price="10"><span class="emoji">🥨</span><div class="item-name">Tandoori Roti</div><div class="item-sub">Bread</div><div class="item-price">₹10</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Naan" data-price="20"><span class="emoji">🥨</span><div class="item-name">Naan</div><div class="item-sub">Butter/Garlic/Plain</div><div class="item-price">₹20-35</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+  </div>
+
+  <div id="veg-catering" style="display:none">
+    <div class="section-title">🥘 STARTERS</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Paneer Pakoda" data-price="1050"><span class="emoji">🧀</span><div class="item-name">Paneer Pakoda (40 pcs)</div><div class="item-sub">Crispy fried paneer</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+    <div class="section-title">🍛 MAIN COURSES</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Dum Aaloo" data-price="850"><span class="emoji">🥔</span><div class="item-name">Dum Aaloo (12 pcs)</div><div class="item-sub">Spiced potatoes</div><div class="item-price">₹850/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Yellow Paneer" data-price="1050"><span class="emoji">🧀</span><div class="item-name">Yellow Paneer (34 pcs)</div><div class="item-sub">Paneer in gravy</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Red Paneer" data-price="1050"><span class="emoji">🍲</span><div class="item-name">Red Paneer (14 pcs)</div><div class="item-sub">Tomato-based</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Rajmah Jammu" data-price="950"><span class="emoji">🫘</span><div class="item-name">Rajmah Jammu</div><div class="item-sub">Bean curry</div><div class="item-price">₹950/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Mix Veg" data-price="850"><span class="emoji">🥗</span><div class="item-name">Mix Veg</div><div class="item-sub">Mixed vegetables</div><div class="item-price">₹850/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Mutter Palak" data-price="750"><span class="emoji">🌿</span><div class="item-name">Mutter Palak</div><div class="item-sub">Peas & spinach</div><div class="item-price">₹750/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Palak Paneer (Cat.)" data-price="850"><span class="emoji">🥬</span><div class="item-name">Palak Paneer</div><div class="item-sub">Spinach paneer</div><div class="item-price">₹850/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Basmati Rice" data-price="350"><span class="emoji">🍚</span><div class="item-name">Basmati Rice</div><div class="item-sub">Premium rice</div><div class="item-price">₹350/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+    <div class="section-title">🍰 DESSERTS</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Firni" data-price="300"><span class="emoji">🍮</span><div class="item-name">Firni</div><div class="item-sub">Rice pudding</div><div class="item-price">₹300/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== KASHMIRI TAB ===== -->
+<div id="tab-kashmiri" class="tab-content">
+  <div class="cat-tabs">
+    <div class="cat-tab active" onclick="showCat('kash-main',this)">🍗 Kashmiri</div>
+    <div class="cat-tab" onclick="showCat('kash-catering',this)">🍖 NV Catering</div>
+  </div>
+  <div id="kash-main">
+    <div class="section-title">🍖 Kashmiri Non-Veg</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Mutton Kabab" data-price="1400"><span class="emoji">🍖</span><div class="item-name">Mutton Kabab</div><div class="item-sub">Starter (10)</div><div class="item-price">₹1400/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Kabab" data-price="1050"><span class="emoji">🍗</span><div class="item-name">Chicken Kabab</div><div class="item-sub">Starter (10)</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Tikka" data-price="1050"><span class="emoji">🍟</span><div class="item-name">Chicken Tikka</div><div class="item-sub">Fry (32)</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Rogan Josh" data-price="1580"><span class="emoji">🥘</span><div class="item-name">Rogan Josh</div><div class="item-sub">Main (10)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Yakhni" data-price="1580"><span class="emoji">🍲</span><div class="item-name">Yakhni</div><div class="item-sub">Main (10)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Kaliya" data-price="1580"><span class="emoji">🍛</span><div class="item-name">Kaliya</div><div class="item-sub">Main (18)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Macch" data-price="1580"><span class="emoji">🍲</span><div class="item-name">Macch</div><div class="item-sub">Main (20)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Kabar-Gah" data-price="1580"><span class="emoji">🍖</span><div class="item-name">Kabar-Gah</div><div class="item-sub">Main (10)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Goshtaba" data-price="1580"><span class="emoji">🍖</span><div class="item-name">Goshtaba</div><div class="item-sub">Main (10)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Rista" data-price="1580"><span class="emoji">🍖</span><div class="item-name">Rista</div><div class="item-sub">Main (10)</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chuk Charvan" data-price="1580"><span class="emoji">🥘</span><div class="item-name">Chuk Charvan</div><div class="item-sub">Main Course</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Rogan Josh" data-price="1150"><span class="emoji">🍗</span><div class="item-name">Chicken Rogan Josh</div><div class="item-sub">Main (10)</div><div class="item-price">₹1150/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Curry" data-price="1150"><span class="emoji">🍗</span><div class="item-name">Chicken Curry</div><div class="item-sub">Main (10)</div><div class="item-price">₹1150/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Fry" data-price="1150"><span class="emoji">🍗</span><div class="item-name">Chicken Fry</div><div class="item-sub">Main (10)</div><div class="item-price">₹1150/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Biryani" data-price="1050"><span class="emoji">🍗</span><div class="item-name">Chicken Biryani</div><div class="item-sub">Services 3</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Mutton Biryani" data-price="1250"><span class="emoji">🍖</span><div class="item-name">Mutton Biryani</div><div class="item-sub">Services 3</div><div class="item-price">₹1250/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+  </div>
+  <div id="kash-catering" style="display:none">
+    <div class="section-title">🍖 STARTERS</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Mutton Seek Kabeb" data-price="1400"><span class="emoji">🍖</span><div class="item-name">Mutton Seek Kabeb (10)</div><div class="item-sub">Grilled mutton</div><div class="item-price">₹1400/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Seek Kabeb" data-price="1050"><span class="emoji">🍗</span><div class="item-name">Chicken Seek Kabeb (10)</div><div class="item-sub">Grilled chicken</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Chicken Tikka Fry" data-price="1050"><span class="emoji">🍟</span><div class="item-name">Chicken Tikka Fry (32)</div><div class="item-sub">Fried chicken</div><div class="item-price">₹1050/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+    <div class="section-title">🥘 MAIN COURSES</div>
+    <div class="menu-grid">
+      <div class="menu-card" data-name="Rogan Josh (Cat.)" data-price="1580"><span class="emoji">🥘</span><div class="item-name">Rogan Josh (10)</div><div class="item-sub">Kashmiri curry</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Yakhni (Cat.)" data-price="1580"><span class="emoji">🍲</span><div class="item-name">Yakhni (10)</div><div class="item-sub">Broth-based</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+      <div class="menu-card" data-name="Goshtaba (Cat.)" data-price="1580"><span class="emoji">🍖</span><div class="item-name">Goshtaba (10)</div><div class="item-sub">Mutton balls</div><div class="item-price">₹1580/kg</div><div class="qty-row"><button class="qty-btn minus" onclick="changeQty(this,-1)">−</button><span class="qty-num">0</span><button class="qty-btn plus" onclick="changeQty(this,1)">+</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REVIEWS TAB ===== -->
+<div id="tab-reviews" class="tab-content">
+  <div style="padding:20px;text-align:center;color:#aaa;font-size:0.9rem;margin-top:40px;">⭐ Reviews coming soon!</div>
+</div>
+
+<!-- ===== OFFERS TAB ===== -->
+<div id="tab-offers" class="tab-content">
+  <div style="padding:20px;text-align:center;color:#aaa;font-size:0.9rem;margin-top:40px;">🎁 Special offers coming soon!</div>
+</div>
+
+<!-- CTA SECTION -->
+<div class="cta-section">
+  <h2>🍛 Ready to Taste Magic?</h2>
+  <p>Order now for fresh, delicious food delivered fast!</p>
+  <button class="cta-call-btn" onclick="openCall()">📞 Call to Order</button>
+</div>
+
+<!-- EMOJI BAR -->
+<div class="emoji-bar">🍛🍖🥘🍗🥗🍲🍚🧅⭐</div>
+
+<!-- ===== DELIVERY CHARGES MODAL ===== -->
+<div class="modal-overlay" id="deliveryModal" onclick="closeDelivery(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeDelivery()">✕</button>
+    <div class="modal-title">🛵 Delivery Charges Calculator</div>
+    <div class="modal-sub">Enter distance to calculate total bill with delivery charges (₹10/km)</div>
+
+    <div class="dist-group">
+      <span class="dist-icon">📍</span>
+      <input class="dist-input" id="distInput" type="number" min="0" placeholder="Enter distance" oninput="recalcBill()" />
+      <span class="dist-unit">km</span>
+    </div>
+
+    <div id="billArea">
+      <div class="empty-cart">🛒 No items added yet.<br>Add items from the menu to see your bill.</div>
+    </div>
+
+    <button class="calc-btn" onclick="openCall()">📞 Place Order via Call</button>
+  </div>
+</div>
+
+<!-- ===== CALL MODAL ===== -->
+<div class="call-modal" id="callModal">
+  <div class="call-box">
+    <button class="x" onclick="closeCall()">✕</button>
+    <div style="font-size:2rem;">🎯</div>
+    <h2>MunchMagic</h2>
+    <div>Call us now to place your order!</div>
+    <div class="num">📞 8595907790</div>
+    <a class="call-btn" href="tel:8595907790">Call Now</a>
+    <div class="call-note">Available for delivery in your area</div>
+  </div>
+</div>
+
+<script>
+  // ===== CART STATE =====
+  const cart = {}; // key: item-name → { name, price, qty }
+
+  function changeQty(btn, delta) {
+    const card = btn.closest('.menu-card');
+    const qtyEl = card.querySelector('.qty-num');
+    const name = card.dataset.name;
+    const price = parseInt(card.dataset.price);
+    let qty = parseInt(qtyEl.textContent) + delta;
+    if (qty < 0) qty = 0;
+    qtyEl.textContent = qty;
+    if (qty === 0) {
+      delete cart[name];
+    } else {
+      cart[name] = { name, price, qty };
+    }
+    // highlight card
+    card.style.background = qty > 0 ? '#fff8f0' : '#fff';
+    card.style.borderLeft = qty > 0 ? '3px solid #FF6B35' : '';
+  }
+
+  function recalcBill() {
+    const dist = parseFloat(document.getElementById('distInput').value) || 0;
+    const deliveryCharge = Math.round(dist * 10);
+    const items = Object.values(cart);
+    const billArea = document.getElementById('billArea');
+
+    if (items.length === 0) {
+      billArea.innerHTML = '<div class="empty-cart">🛒 No items added yet.<br>Add items from the menu to see your bill.</div>';
+      return;
+    }
+
+    let itemTotal = 0;
+    let rows = items.map(item => {
+      const lineTotal = item.price * item.qty;
+      itemTotal += lineTotal;
+      return `<tr>
+        <td class="item-col">${item.name}</td>
+        <td class="qty-col">×${item.qty}</td>
+        <td class="price-col">₹${item.price}</td>
+        <td class="price-col">₹${lineTotal}</td>
+      </tr>`;
+    }).join('');
+
+    const grandTotal = itemTotal + deliveryCharge;
+
+    billArea.innerHTML = `
+      <table class="bill-table">
+        <thead>
+          <tr>
+            <th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr class="delivery-row">
+            <td colspan="3">🛵 Delivery (${dist} km × ₹10)</td>
+            <td class="price-col">₹${deliveryCharge}</td>
+          </tr>
+          <tr class="grand-total">
+            <td colspan="3"><strong>Grand Total</strong></td>
+            <td class="price-col"><strong>₹${grandTotal}</strong></td>
+          </tr>
+        </tfoot>
+      </table>`;
+  }
+
+  function openDelivery() {
+    recalcBill();
+    document.getElementById('deliveryModal').classList.add('open');
+  }
+
+  function closeDelivery(e) {
+    if (!e || e.target === document.getElementById('deliveryModal')) {
+      document.getElementById('deliveryModal').classList.remove('open');
+    }
+  }
+
+  function openCall() {
+    document.getElementById('callModal').classList.add('open');
+  }
+
+  function closeCall() {
+    document.getElementById('callModal').classList.remove('open');
+  }
+
+  function shareApp() {
+    if (navigator.share) {
+      navigator.share({ title: 'MunchMagic', url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!'));
+    }
+  }
+
+  function showMainTab(tabId, el) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function showCat(catId, el) {
+    const parent = el.closest('.tab-content') || document.body;
+    // hide all sibling cat panels inside same tab
+    el.closest('.cat-tabs').querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    // find all direct sections in that tab
+    const tab = el.closest('.tab-content');
+    tab.querySelectorAll('[id]').forEach(div => {
+      if (div.id !== 'deliveryModal' && div.id !== 'callModal' && div.id !== 'billArea' && div.classList.contains !== undefined) {
+        div.style.display = 'none';
+      }
+    });
+    const target = document.getElementById(catId);
+    if (target) target.style.display = 'block';
+  }
+</script>
+</body>
+</html>
